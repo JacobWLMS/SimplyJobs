@@ -100,7 +100,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
         <div class="p-4 sm:p-6">
             <div class="flex justify-between items-center mb-4 sm:mb-6">
-                <h2 class="text-xl sm:text-2xl font-bold dark:text-white">Simply Jobs</h2>
+                <h2 class="text-xl sm:text-2xl font-bold dark:text-white">ATS Scout</h2>
                 <button
                     on:click={() => $showTutorial = true}
                     class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
