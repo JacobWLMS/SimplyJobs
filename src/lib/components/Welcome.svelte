@@ -16,50 +16,73 @@
 </script>
 
 {#if showTutorial}
-<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div class="bg-white dark:bg-gray-800 rounded-lg max-w-2xl w-full p-6 shadow-xl">
-        <div class="space-y-4">
-            <h2 class="text-2xl font-bold dark:text-white">Welcome to Job Search Generator!</h2>
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+    <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-lg mx-auto my-4 shadow-xl">
+        <div class="p-4 sm:p-6 space-y-4">
+            <div class="flex justify-between items-start">
+                <h2 class="text-xl sm:text-2xl font-bold dark:text-white">Welcome to Job Search Generator!</h2>
+                <button 
+                    on:click={dismissTutorial}
+                    class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
             
-            <div class="prose dark:prose-invert">
-                <p class="text-gray-600 dark:text-gray-300">
-                    This tool helps you create powerful Google search strings to find job postings across multiple Applicant Tracking Systems (ATS).
+            <div class="prose dark:prose-invert max-w-none">
+                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+                    Generate powerful search strings to find job postings across multiple Applicant Tracking Systems (ATS).
                 </p>
 
-                <h3 class="text-lg font-semibold mt-4 dark:text-white">How to Use:</h3>
+                <h3 class="text-base sm:text-lg font-semibold mt-4 mb-2 dark:text-white">How to Use:</h3>
                 
-                <ol class="space-y-2 text-gray-600 dark:text-gray-300">
-                    <li>
-                        <strong>Select ATS Platforms:</strong> Choose which job board platforms you want to search through.
+                <ol class="space-y-2 text-sm sm:text-base text-gray-600 dark:text-gray-300 list-decimal pl-4">
+                    <li class="pl-1">
+                        <strong>Select ATS Platforms:</strong> Choose which job board platforms to search through
                     </li>
-                    <li>
-                        <strong>Add Custom URLs:</strong> Include any specific company career pages you want to search.
+                    <li class="pl-1">
+                        <strong>Add Custom URLs:</strong> Include specific company career pages
                     </li>
-                    <li>
-                        <strong>Enter Keywords:</strong> Add job titles or skills (separate multiple with commas).
+                    <li class="pl-1">
+                        <strong>Enter Keywords:</strong> Add job titles or skills (comma-separated)
                     </li>
-                    <li>
-                        <strong>Specify Location:</strong> Add your preferred work location.
+                    <li class="pl-1">
+                        <strong>Specify Location:</strong> Add your preferred work location
                     </li>
-                    <li>
-                        <strong>Must-Include Terms:</strong> Add terms that MUST appear in the job posting.
+                    <li class="pl-1">
+                        <strong>Must-Include Terms:</strong> Add terms that MUST appear in the posting
                     </li>
                 </ol>
 
-                <h3 class="text-lg font-semibold mt-4 dark:text-white">Features:</h3>
-                <ul class="space-y-2 text-gray-600 dark:text-gray-300">
-                    <li>✨ Search across multiple job boards simultaneously</li>
-                    <li>🔍 Generate Google-optimized search strings</li>
-                    <li>📋 One-click copy to clipboard</li>
-                    <li>🌐 Direct Google search integration</li>
-                    <li>🎨 Dark mode support</li>
-                </ul>
+                <div class="mt-4">
+                    <h3 class="text-base sm:text-lg font-semibold mb-2 dark:text-white">Quick Features:</h3>
+                    <div class="grid grid-cols-2 gap-2 text-sm sm:text-base text-gray-600 dark:text-gray-300">
+                        <div class="flex items-center space-x-2">
+                            <span>✨</span>
+                            <span>Multi-board search</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span>🔍</span>
+                            <span>Google-optimized</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span>📋</span>
+                            <span>One-click copy</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span>🌐</span>
+                            <span>Direct search</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="mt-6 flex justify-end">
+            <div class="pt-4 flex justify-end">
                 <button
                     on:click={dismissTutorial}
-                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    class="w-full sm:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600"
                 >
                     Get Started
                 </button>
