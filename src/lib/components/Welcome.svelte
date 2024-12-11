@@ -20,7 +20,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-lg mx-auto my-4 shadow-xl">
         <div class="p-4 sm:p-6 space-y-4">
             <div class="flex justify-between items-start">
-                <h2 class="text-xl sm:text-2xl font-bold dark:text-white">Welcome to Job Search Generator!</h2>
+                <h2 class="text-xl sm:text-2xl font-bold dark:text-white">Welcome to Simply Jobs!</h2>
                 <button 
                     on:click={dismissTutorial}
                     class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"

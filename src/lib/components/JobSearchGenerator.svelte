@@ -98,7 +98,7 @@
 <div class="w-full max-w-3xl mx-auto px-4 py-4 sm:px-6 sm:py-6">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
         <div class="p-4 sm:p-6">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 dark:text-white">Job Search Generator</h2>
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 dark:text-white">Simply Jobs</h2>
             
             <div class="space-y-4 sm:space-y-6">
                 <div>
