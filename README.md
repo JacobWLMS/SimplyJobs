@@ -1,38 +1,78 @@
-# sv
+# Job Search Generator
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A powerful tool that helps job seekers create optimized Google search strings to find job postings across multiple Applicant Tracking Systems (ATS). Built with SvelteKit and TailwindCSS.
 
-## Creating a project
+## 🌟 Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Multi-Platform Search**: Search across multiple job boards simultaneously
+- **Custom ATS Support**: Add your own company career page URLs
+- **Advanced Search Options**: Keywords, location, and must-include terms
+- **Dark Mode**: Comfortable viewing in any lighting condition
+- **One-Click Actions**: Copy search strings or start Google searches instantly
+- **Mobile Responsive**: Works great on all device sizes
 
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18 or later
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+git clone https://github.com/yourusername/job-search-generator.git
+cd job-search-generator
 ```
 
-## Developing
+2. Install dependencies:
+```bash
+npm install
+```
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
+3. Start the development server:
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+4. Visit `http://localhost:5173` in your browser
 
-To create a production version of your app:
+## 🛠 Usage
 
-```bash
-npm run build
-```
+1. **Select ATS Platforms**
+   - Choose from popular platforms like Greenhouse, Lever, Workday, etc.
+   - Add custom career page URLs for specific companies
 
-You can preview the production build with `npm run preview`.
+2. **Configure Search Parameters**
+   - Enter job-related keywords
+   - Specify location preferences
+   - Add must-include terms for more targeted results
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+3. **Generate and Use**
+   - Copy the generated search string
+   - Use the direct Google search button
+   - Modify and refine as needed
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [SvelteKit](https://kit.svelte.dev/)
+- Styled with [TailwindCSS](https://tailwindcss.com/)
+- Icons from [Heroicons](https://heroicons.com/)
+
+---
+Made with ❤️ for job seekers everywhere
