@@ -6,10 +6,7 @@ const config = {
     preprocess: vitePreprocess(),
     kit: {
         adapter: adapter({
-            routes: {
-                include: ['/*'],
-                exclude: []
-            }
+            fallback: 'index.html' // Add this line
         })
     }
 };
