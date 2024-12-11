@@ -1,21 +1,21 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    let showTutorial = true;
-
-    function dismissTutorial() {
-        showTutorial = false;
-        localStorage.setItem('tutorialSeen', 'true');
-    }
+    import { showTutorial } from '$lib/stores/tutorial';
 
     onMount(() => {
         const seen = localStorage.getItem('tutorialSeen');
-        if (seen) {
-            showTutorial = false;
+        if (!seen) {
+            $showTutorial = true;
         }
     });
+
+    function dismissTutorial() {
+        $showTutorial = false;
+        localStorage.setItem('tutorialSeen', 'true');
+    }
 </script>
 
-{#if showTutorial}
+{#if $showTutorial}
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
     <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-lg mx-auto my-4 shadow-xl">
         <div class="p-4 sm:p-6 space-y-4">
