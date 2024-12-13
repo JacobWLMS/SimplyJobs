@@ -152,7 +152,7 @@
                         id="keywords"
                         type="text"
                         bind:value={keywords}
-                        placeholder="e.g. developer, engineer"
+                        placeholder="e.g. Developer, Engineer"
                         class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                     />
                 </div>
