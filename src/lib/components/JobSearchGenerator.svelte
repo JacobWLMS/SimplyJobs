@@ -129,11 +129,13 @@
 <div class="w-full max-w-3xl mx-auto px-4 py-4 sm:px-6 sm:py-6">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
         <div class="p-4 sm:p-6">
-            <div class="flex justify-between items-center mb-4 sm:mb-6">
-                <h2 class="text-xl sm:text-2xl font-bold dark:text-white">ATS Scout</h2>
+            <div class="relative mb-4 sm:mb-6">
+                <div class="flex justify-center w-full">
+                    <h2 class="text-xl sm:text-2xl font-bold dark:text-white">ATS SCOUT</h2>
+                </div>
                 <button
                     on:click={() => $showTutorial = true}
-                    class="p-2 text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="absolute right-0 top-0 p-2 text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     aria-label="Show tutorial"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
