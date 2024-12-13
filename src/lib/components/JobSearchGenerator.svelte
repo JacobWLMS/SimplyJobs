@@ -9,7 +9,6 @@
         operator: string;
     };
 
-    // Helper function to get date in yyyy/mm/dd format
     function formatDate(daysAgo: number): string {
         const date = new Date();
         date.setDate(date.getDate() - daysAgo);
@@ -43,6 +42,7 @@
         trac: { name: 'Trac', domain: 'apps.trac.jobs' }
     };
 
+    let isATSExpanded = false;
     let keywords = '';
     let location = '';
     let mustInclude = '';
@@ -59,17 +59,16 @@
         trac: false
     };
 
+    $: selectedCount = Object.values(selectedSites).filter(Boolean).length;
     $: searchString = generateSearchString(selectedSites, keywords, location, mustInclude, customATS, selectedTimeFrame);
 
     function generateSearchString(sites: SelectedSites, keys: string, loc: string, must: string, custom: string, timeFrame: TimeFrame): string {
         const searchParts: string[] = [];
 
-        // Add site restrictions
         const selectedDomains = Object.entries(sites)
             .filter(([_, isSelected]) => isSelected)
             .map(([key]) => atsSites[key].domain);
 
-        // Add custom ATS domain if provided
         if (custom.trim()) {
             selectedDomains.push(...custom.split(',').map(url => url.trim()));
         }
@@ -79,10 +78,8 @@
             searchParts.push(`(${siteConditions})`);
         }
 
-        // Add "apply" intext search
         searchParts.push('intext:"apply"');
 
-        // Add keywords
         if (keys) {
             keys.split(',').forEach(keyword => {
                 if (keyword.trim()) {
@@ -91,12 +88,10 @@
             });
         }
 
-        // Add location
         if (loc) {
             searchParts.push(`intext:"${loc.trim()}"`);
         }
 
-        // Add must-include terms
         if (must) {
             const terms = must.split(',').map(term => term.trim()).filter(Boolean);
             if (terms.length > 0) {
@@ -147,96 +142,116 @@
                 </button>
             </div>
             
-            <div class="space-y-4 sm:space-y-6">
+            <div class="space-y-4">
+
                 <div>
-                    <h3 class="text-base sm:text-lg font-medium mb-2 sm:mb-3 dark:text-gray-200">Select ATS Platforms</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
-                        {#each Object.entries(atsSites) as [key, site]}
-                            <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md">
-                                <input
-                                    type="checkbox"
-                                    bind:checked={selectedSites[key]}
-                                    class="w-4 h-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:bg-gray-700"
-                                />
-                                <span class="text-sm dark:text-gray-300">{site.name}</span>
-                            </label>
-                        {/each}
-                    </div>
+                    <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="keywords">
+                        Keywords (comma-separated)
+                    </label>
+                    <input
+                        id="keywords"
+                        type="text"
+                        bind:value={keywords}
+                        placeholder="e.g. developer, engineer"
+                        class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    />
                 </div>
 
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="customATS">
-                            Custom ATS URLs (comma-separated)
-                        </label>
-                        <input
-                            id="customATS"
-                            type="text"
-                            bind:value={customATS}
-                            placeholder="e.g. careers.company.com"
-                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                        />
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="location">
+                        Location
+                    </label>
+                    <input
+                        id="location"
+                        type="text"
+                        bind:value={location}
+                        placeholder="e.g. London, UK"
+                        class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    />
+                </div>
 
-                    <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="keywords">
-                            Keywords (comma-separated)
-                        </label>
-                        <input
-                            id="keywords"
-                            type="text"
-                            bind:value={keywords}
-                            placeholder="e.g. developer, engineer"
-                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                        />
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="mustInclude">
+                        Must Include Terms (comma-separated)
+                    </label>
+                    <input
+                        id="mustInclude"
+                        type="text"
+                        bind:value={mustInclude}
+                        placeholder="e.g. Azure, AWS"
+                        class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    />
+                </div>
 
-                    <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="location">
-                            Location
-                        </label>
-                        <input
-                            id="location"
-                            type="text"
-                            bind:value={location}
-                            placeholder="e.g. London, UK"
-                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                        />
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 dark:text-gray-200">
+                        Selected ATS Platforms
+                    </label>
+                    <button
+                        on:click={() => isATSExpanded = !isATSExpanded}
+                        class="w-full flex justify-between items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-left bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    >
+                        <span class="text-base dark:text-gray-200">
+                            {selectedCount} platform{selectedCount !== 1 ? 's' : ''} selected
+                        </span>
+                        <svg
+                            class="w-5 h-5 transform transition-transform {isATSExpanded ? 'rotate-180' : ''}"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
 
-                    <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="mustInclude">
-                            Must Include Terms (comma-separated)
-                        </label>
-                        <input
-                            id="mustInclude"
-                            type="text"
-                            bind:value={mustInclude}
-                            placeholder="e.g. Azure, AWS"
-                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                        />
-                    </div>
+                    {#if isATSExpanded}
+                        <div class="mt-2 grid grid-cols-2 gap-2 p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700">
+                            {#each Object.entries(atsSites) as [key, site]}
+                                <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md">
+                                    <input
+                                        type="checkbox"
+                                        bind:checked={selectedSites[key]}
+                                        class="w-4 h-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:bg-gray-700"
+                                    />
+                                    <span class="text-sm dark:text-gray-300">{site.name}</span>
+                                </label>
+                            {/each}
+                        </div>
+                    {/if}
+                </div>
 
-                    <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="timeFrame">
-                            Time Range
-                        </label>
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-center">
-                                <input
-                                    id="timeFrame"
-                                    type="range"
-                                    min="0"
-                                    max={timeFrames.length - 1}
-                                    bind:value={selectedTimeFrameIndex}
-                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                                />
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                                <span class="font-medium {selectedTimeFrame.value ? 'text-blue-600 dark:text-blue-400' : ''}">
-                                    {selectedTimeFrame.label}
-                                </span>
-                            </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="customATS">
+                        Custom ATS URLs (comma-separated)
+                    </label>
+                    <input
+                        id="customATS"
+                        type="text"
+                        bind:value={customATS}
+                        placeholder="e.g. careers.company.com"
+                        class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="timeFrame">
+                        Time Range
+                    </label>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <input
+                                id="timeFrame"
+                                type="range"
+                                min="0"
+                                max={timeFrames.length - 1}
+                                bind:value={selectedTimeFrameIndex}
+                                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                            />
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                            <span class="font-medium {selectedTimeFrame.value ? 'text-blue-600 dark:text-blue-400' : ''}">
+                                {selectedTimeFrame.label}
+                            </span>
                         </div>
                     </div>
                 </div>
