@@ -39,7 +39,8 @@
         icims: { name: 'iCIMS', domain: 'careers-page.icims.com' },
         smartrecruiters: { name: 'SmartRecruiters', domain: 'jobs.smartrecruiters.com' },
         bamboohr: { name: 'BambooHR', domain: 'bamboohr.com/jobs' },
-        ashby: { name: 'Ashby', domain: 'jobs.ashbyhq.com' }
+        ashby: { name: 'Ashby', domain: 'jobs.ashbyhq.com' },
+        trac: { name: 'Trac', domain: 'apps.trac.jobs' }
     };
 
     let keywords = '';
@@ -54,7 +55,8 @@
         icims: false,
         smartrecruiters: false,
         bamboohr: false,
-        ashby: false
+        ashby: false,
+        trac: false
     };
 
     $: searchString = generateSearchString(selectedSites, keywords, location, mustInclude, customATS, selectedTimeFrame);
