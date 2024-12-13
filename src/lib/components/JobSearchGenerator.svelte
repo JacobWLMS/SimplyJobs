@@ -1,7 +1,36 @@
 <script lang="ts">
     import { showTutorial } from '$lib/stores/tutorial';
     import type { ATSSite, SelectedSites } from '$lib/types';
-    
+
+    type TimeFrame = {
+        label: string;
+        days: number;
+        value: string;
+        operator: string;
+    };
+
+    // Helper function to get date in yyyy/mm/dd format
+    function formatDate(daysAgo: number): string {
+        const date = new Date();
+        date.setDate(date.getDate() - daysAgo);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}/${month}/${day}`;
+    }
+
+    const timeFrames: TimeFrame[] = [
+        { label: 'All time', days: 0, value: '', operator: '' },
+        { label: 'Last 24 hours', days: 1, value: formatDate(1), operator: 'after' },
+        { label: 'Last 3 days', days: 3, value: formatDate(3), operator: 'after' },
+        { label: 'Last 7 days', days: 7, value: formatDate(7), operator: 'after' },
+        { label: 'Last 14 days', days: 14, value: formatDate(14), operator: 'after' },
+        { label: 'Last 30 days', days: 30, value: formatDate(30), operator: 'after' }
+    ];
+
+    let selectedTimeFrameIndex = 0;
+    $: selectedTimeFrame = timeFrames[selectedTimeFrameIndex];
+
     const atsSites: Record<string, ATSSite> = {
         greenhouse: { name: 'Greenhouse', domain: 'boards.greenhouse.io' },
         lever: { name: 'Lever', domain: 'jobs.lever.co' },
@@ -28,9 +57,9 @@
         ashby: false
     };
 
-    $: searchString = generateSearchString(selectedSites, keywords, location, mustInclude, customATS);
+    $: searchString = generateSearchString(selectedSites, keywords, location, mustInclude, customATS, selectedTimeFrame);
 
-    function generateSearchString(sites: SelectedSites, keys: string, loc: string, must: string, custom: string): string {
+    function generateSearchString(sites: SelectedSites, keys: string, loc: string, must: string, custom: string, timeFrame: TimeFrame): string {
         const searchParts: string[] = [];
 
         // Add site restrictions
@@ -74,6 +103,10 @@
             }
         }
 
+        if (timeFrame.value) {
+            searchParts.push(`${timeFrame.operator}:${timeFrame.value}`);
+        }
+
         return searchParts.join(' ');
     }
 
@@ -103,7 +136,7 @@
                 <h2 class="text-xl sm:text-2xl font-bold dark:text-white">ATS Scout</h2>
                 <button
                     on:click={() => $showTutorial = true}
-                    class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    class="p-2 text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     aria-label="Show tutorial"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,10 +164,11 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200">
+                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="customATS">
                             Custom ATS URLs (comma-separated)
                         </label>
                         <input
+                            id="customATS"
                             type="text"
                             bind:value={customATS}
                             placeholder="e.g. careers.company.com"
@@ -143,10 +177,11 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200">
+                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="keywords">
                             Keywords (comma-separated)
                         </label>
                         <input
+                            id="keywords"
                             type="text"
                             bind:value={keywords}
                             placeholder="e.g. developer, engineer"
@@ -155,10 +190,11 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200">
+                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="location">
                             Location
                         </label>
                         <input
+                            id="location"
                             type="text"
                             bind:value={location}
                             placeholder="e.g. London, UK"
@@ -167,15 +203,39 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200">
+                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="mustInclude">
                             Must Include Terms (comma-separated)
                         </label>
                         <input
+                            id="mustInclude"
                             type="text"
                             bind:value={mustInclude}
                             placeholder="e.g. Azure, AWS"
                             class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                         />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1.5 dark:text-gray-200" for="timeFrame">
+                            Time Range
+                        </label>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <input
+                                    id="timeFrame"
+                                    type="range"
+                                    min="0"
+                                    max={timeFrames.length - 1}
+                                    bind:value={selectedTimeFrameIndex}
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                                />
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                <span class="font-medium {selectedTimeFrame.value ? 'text-blue-600 dark:text-blue-400' : ''}">
+                                    {selectedTimeFrame.label}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
